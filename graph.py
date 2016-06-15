@@ -1,13 +1,25 @@
 from collections import defaultdict
+from graph_traversal import TraversalFactory
 
 class Graph:
 
 	def __init__(self):
 		self.adjacency_list = defaultdict(list)
+		self.traversal_strategy = None
 		self.visiteds = 0
 
-	def add_edge(self, node, neighbour, cost):
-		self.adjacency_list[node].append((neighbour, cost))	
+	def choose_traversal_strategy(self, traversal_strategy):
+		self.traversal_strategy = TraversalFactory.build(traversal_strategy)
+
+	def traverse_from_source(self, source):
+		return self.traversal_strategy.traverse_from_source(source, self.adjacency_list)
+
+	def add_unidirectional_edge(self, node, neighbour, distance):
+		self.adjacency_list[node].append((neighbour, distance))
+
+	def add_bidirectional_edge(self, node, neighbour, distance):
+		self.adjacency_list[node].append((neighbour, distance))
+		self.adjacency_list[neighbour].append((node, distance))
 
 	def __str__(self):
 		result = ""
