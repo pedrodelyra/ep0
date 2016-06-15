@@ -35,7 +35,6 @@ class FloydWarshall(TraversalStrategy):
                     distance[first_node][second_node] = min(distance[first_node][second_node],
                                                        distance[first_node][current_node] + distance[current_node][second_node])
 
-
         return distance[source]
 
 class TraversalFactory():
