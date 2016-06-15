@@ -23,3 +23,11 @@ if __name__ == '__main__':
 
 	for node in distance_from_fga.keys():
 		print("distance from fga to " + node + " is " + str(distance_from_fga[node]))
+
+	print("")
+
+	brasilia.choose_traversal_strategy("DIJKSTRA")
+	distance_from_fga = brasilia.traverse_from_source("fga")
+
+	for node in distance_from_fga.keys():
+		print("distance from fga to " + node + " is " + str(distance_from_fga[node]))

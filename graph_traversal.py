@@ -1,5 +1,6 @@
 from abc import abstractmethod
 from collections import defaultdict
+from queue import *
 
 class TraversalStrategy:
 
@@ -59,6 +60,35 @@ class BellmanFord(TraversalStrategy):
 
         return distance
 
+class Dijkstra(TraversalStrategy):
+	def __init__(self):
+		self.INFINITY = 1 << 60
+
+	def traverse_from_source(self, source, adjacency_list):
+		distance = dict()
+		nodes = []
+		for node in adjacency_list.keys():
+			nodes.append(node)
+			distance[node] = self.INFINITY
+
+		distance[source] = 0
+		pq = PriorityQueue()
+		pq.put((distance[source], source))
+		while not pq.empty():
+			current_state = pq.get()
+			current_distance = current_state[0]
+			current_node = current_state[1]
+
+			if current_distance > distance[current_node]:
+				continue
+
+			for neighbour, neighbour_distance in adjacency_list[current_node]:
+				if distance[neighbour] > distance[current_node] + neighbour_distance:
+					distance[neighbour] = distance[current_node] + neighbour_distance
+					pq.put((distance[neighbour], neighbour))
+
+		return distance
+
 class TraversalFactory():
     def build(traversal_strategy):
         if traversal_strategy == 'FLOYD_WARSHALL':
@@ -66,5 +96,4 @@ class TraversalFactory():
         elif traversal_strategy == 'BELLMAN_FORD':
             return BellmanFord()
         elif traversal_strategy == 'DIJKSTRA':
-            #return Dijkstra()
-            pass
+            return Dijkstra()
